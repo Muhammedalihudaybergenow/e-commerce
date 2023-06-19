@@ -7,9 +7,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(UserEntity) private userRepository:Repository<UserEntity>){
-
-  }
+  constructor(@InjectRepository(UserEntity) private userRepository:Repository<UserEntity>){}
   async create(createUserDto: CreateUserDto) {
     const hash = bcrypt.hashSync(createUserDto.password,10);
     return this.userRepository.save({
@@ -20,14 +18,26 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.userRepository.find()
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.userRepository.findOneBy({
+      id
+    })
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
+    const {password,phonenumber,username} = updateUserDto;
+    const entity = new UserEntity({
+      id,
+      phonenumber,
+      username
+    })
+    if(password){
+      entity.password = bcrypt.hashSync(password,10)
+    }
+    return this.userRepository.save(entity);
     return `This action updates a #${id} user`;
   }
 

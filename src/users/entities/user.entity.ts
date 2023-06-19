@@ -35,4 +35,8 @@ export class UserEntity {
         nullable: false
     })
     password: string;
+
+    constructor(user?: Partial<UserEntity>){
+        Object.assign(this,user);
+    }
 }
