@@ -1,15 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { BrandsService } from '../services/brands.service';
 import { CreateBrandDto } from '../dto/create-brand.dto';
 import { UpdateBrandDto } from '../dto/update-brand.dto';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { ImageUpload } from 'src/common/images/image.uploads';
 
 @Controller('brands')
+@ApiTags('Brands Controller')
 export class BrandsController {
   constructor(private readonly brandsService: BrandsService) {}
 
   @Post()
-  create(@Body() createBrandDto: CreateBrandDto) {
-    return this.brandsService.create(createBrandDto);
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image',{
+    storage: diskStorage({
+      destination:'./uploads',
+      filename: ImageUpload.editFileName
+    })
+  }))
+  create(@Body() createBrandDto: CreateBrandDto,@UploadedFile() file: Express.Multer.File) {
+    return this.brandsService.create(createBrandDto,file);
   }
 
   @Get()
