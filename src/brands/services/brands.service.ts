@@ -4,6 +4,7 @@ import { UpdateBrandDto } from '../dto/update-brand.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BrandEntity } from '../entities/brand.entity';
 import { Repository } from 'typeorm';
+import * as fs from 'fs';
 
 @Injectable()
 export class BrandsService {
@@ -19,7 +20,7 @@ export class BrandsService {
   }
 
   findAll() {
-    return `This action returns all brands`;
+    return this.brandRepository.createQueryBuilder('b').getMany()
   }
 
   findOne(id: number) {
@@ -30,7 +31,12 @@ export class BrandsService {
     return `This action updates a #${id} brand`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} brand`;
+  async remove(id: number) {
+    const entity = await this.brandRepository.findOneBy({
+      id
+    })
+    const result = await this.brandRepository.remove(entity);
+    fs.unlinkSync(entity.path);
+    return result;
   }
 }

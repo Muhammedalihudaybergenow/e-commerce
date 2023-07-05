@@ -6,6 +6,7 @@ import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { ImageUpload } from 'src/common/images/image.uploads';
+import { join } from 'path'
 
 @Controller('brands')
 @ApiTags('Brands Controller')
