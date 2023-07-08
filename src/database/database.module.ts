@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BrandEntity } from 'src/brands/entities/brand.entity';
 import { CategoryEntity } from 'src/categories/entities/category.entity';
+import { ProductEntity } from 'src/products/entities/product.entity';
 import { UserEntity } from 'src/users/entities/user.entity';
 
 @Module({   
@@ -12,7 +13,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
         username: 'postgres',
         password: 'zaqwsx',
         database:'e-commerce',
-        entities: [UserEntity,BrandEntity,CategoryEntity],
+        entities: [UserEntity,BrandEntity,CategoryEntity,ProductEntity],
         synchronize:true
     })]
 })

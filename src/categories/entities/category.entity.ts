@@ -24,4 +24,8 @@ export class CategoryEntity {
 
     @TreeChildren()
     children: CategoryEntity[];
+
+    constructor(category?:Partial<CategoryEntity>){
+        Object.assign(this,category)
+    }
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ProductEntity } from "src/products/entities/product.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: 'brands'
@@ -27,6 +28,8 @@ export class BrandEntity {
     })
     path:string;
 
+    @OneToMany(()=>ProductEntity,(products)=>products.brand)
+    products: ProductEntity[]
     constructor(brand?: Partial<BrandEntity>){
         Object.assign(this, brand)
     }
