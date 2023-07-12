@@ -6,6 +6,7 @@ import { ProductEntity } from '../entities/product.entity';
 import { Repository } from 'typeorm';
 import { BrandEntity } from 'src/brands/entities/brand.entity';
 import { CategoryEntity } from 'src/categories/entities/category.entity';
+import { ProductQueryDto} from '../dto/product-query.dto';
 
 @Injectable()
 export class ProductsService {
@@ -25,9 +26,21 @@ export class ProductsService {
     return this.productRepository.save(entity);
   }
 
-  findAll() {
-    return `This action returns all products`;
-  }
+  findAll(dto:ProductQueryDto) {
+    const {limit,search,skip}=dto; 
+const query =this.productRepository.createQueryBuilder('products');
+if(search){
+  query.where(
+    'products.name ILIKE (:search) OR products.description ILIKE (:search)',
+    {search : `%${search}%`}
+  )
+}
+return query 
+.take(limit)
+.skip((skip-1)*limit)
+.getMany()
+  
+}
 
   findOne(id: number) {
     return this.productRepository.createQueryBuilder('product')
@@ -42,6 +55,9 @@ export class ProductsService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} product`;
+    const entity=new ProductEntity({
+      id,
+    })
+    return this.productRepository.remove(entity)
   }
 }
