@@ -14,7 +14,7 @@ import { UserEntity } from 'src/users/entities/user.entity';
         password: 'zaqwsx',
         database:'e-commerce',
         entities: [UserEntity,BrandEntity,CategoryEntity,ProductEntity],
-        synchronize:true
+        synchronize:false
     })]
 })
 export class DatabaseModule {}

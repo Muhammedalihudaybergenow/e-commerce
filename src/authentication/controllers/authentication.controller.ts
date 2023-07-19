@@ -10,7 +10,7 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 @Controller('authentication')
 @ApiTags('Authentication Controller')
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(private readonly authenticationService: AuthenticationService) { }
 
   @Post('registration')
   registration(@Body() createAuthenticationDto: CreateRegistrationDto) {
@@ -18,13 +18,7 @@ export class AuthenticationController {
   }
 
   @Post('login')
-  login(@Body() body:LoginDto){
+  login(@Body() body: LoginDto) {
     return this.authenticationService.login(body);
-  }
-
-  @Post('fake')
-  @UseGuards(JwtAuthGuard)
-  fake(@CurrentUser() user: UserEntity){
-    return user;
   }
 }
