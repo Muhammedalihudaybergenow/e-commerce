@@ -16,7 +16,7 @@ const usersRoles = [
 export class UserRoleSeeder implements Seeder {
     async run(dataSource: DataSource, factoryManager: SeederFactoryManager): Promise<any> {
         try {
-               const roleRepository = dataSource.getRepository(RoleEntity);
+        const roleRepository = dataSource.getRepository(RoleEntity);
         const userRepository = dataSource.getRepository(UserEntity);
         const roleNames = usersRoles.map(userRole=>userRole.name);
         const userPhonenumber = usersRoles.map(userRole=>userRole.phonenumber)

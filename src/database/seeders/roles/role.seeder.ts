@@ -20,7 +20,7 @@ export class RoleSeeder  implements Seeder{
         const roleEntities =await roleRepository.createQueryBuilder('roles')
         .where('roles.name IN (:...names)',{names})
         .getMany();
-        const entities:RoleEntity[] = []
+        const entities:RoleEntity[] = [];
         roles.forEach(role=>{
             const roleCheck = roleEntities.find(roleEntity=>roleEntity.name === role.name)
             if(!roleCheck){

@@ -1,3 +1,4 @@
+import { PermissionEntity } from "src/permissions/entities/permission.entity";
 import { RoleEntity } from "src/roles/entities/role.entity";
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -50,6 +51,9 @@ export class UserEntity {
         }
     })
     roles: RoleEntity[];
+
+    @ManyToMany(()=>PermissionEntity,(permissions)=>permissions.users)
+    permissions: PermissionEntity[];
 
     constructor(user?: Partial<UserEntity>){
         Object.assign(this,user);

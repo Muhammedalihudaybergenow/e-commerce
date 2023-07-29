@@ -17,11 +17,13 @@ export class JwtStrategy extends PassportStrategy(Strategy,'a'){
     }
 
     async validate(payload:JwtPayload){
-        console.log(payload)
         const { id } = payload;
-        const user = await this.userRepository.findOneBy({
-            id
-        })
+        const user = await this.userRepository.createQueryBuilder('u')
+        .leftJoinAndSelect('u.roles','r')
+        .leftJoinAndSelect('r.permissions','p')
+        .leftJoinAndSelect('u.permissions','u')
+        .where('u.id =:id',{id})
+        .getOne();
         return user
     }
 }
