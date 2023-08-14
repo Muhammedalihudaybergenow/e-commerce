@@ -34,11 +34,18 @@ export class CreateProductDto {
         type: Number,
         required:false,
         nullable:false
+        
     })
     @IsOptional()
     @IsNumber()
     discount: number;
 
+    @ApiProperty({
+        type: Number,
+        required: true,
+        nullable: false
+    })
+    count: number;
     @ApiProperty({
         type: Number,
         required:true,

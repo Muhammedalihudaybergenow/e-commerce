@@ -41,6 +41,13 @@ export class ProductEntity {
     })
     discount: number;
 
+    @Column({
+        name: 'count',
+        type: 'integer',
+        nullable: false
+    })
+    count: number;
+
     @ManyToOne(()=>BrandEntity,(brand)=>brand.products)
     @JoinColumn({
         name: 'brand_id',
