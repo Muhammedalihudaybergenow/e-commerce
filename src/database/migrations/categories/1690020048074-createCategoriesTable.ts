@@ -23,7 +23,7 @@ export class CreateCategoriesTable1690020048074 implements MigrationInterface {
                 {
                     name: 'parentId',
                     type: 'integer',
-                    isNullable: false
+                    isNullable: true
                 }
             ],
             foreignKeys:[

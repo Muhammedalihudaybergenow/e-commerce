@@ -20,10 +20,11 @@ export class JwtStrategy extends PassportStrategy(Strategy,'a'){
         const { id } = payload;
         const user = await this.userRepository.createQueryBuilder('u')
         .leftJoinAndSelect('u.roles','r')
-        .leftJoinAndSelect('r.permissions','p')
-        .leftJoinAndSelect('u.permissions','u')
+        .leftJoinAndSelect('r.permissions','rP')
+        .leftJoinAndSelect('u.permissions','uP')
         .where('u.id =:id',{id})
         .getOne();
+        console.log(user);
         return user
     }
 }

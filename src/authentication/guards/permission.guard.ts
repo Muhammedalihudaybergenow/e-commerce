@@ -11,7 +11,9 @@ export class PermissionGuard implements CanActivate{
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest();
         const user:UserEntity = request.user;
+        console.log(user);
         const permissions = this.reflector.get<string[]>('PERMISSIONS',context.getHandler());
+        console.log(permissions);
         if(!permissions.length ){
             return true;
         }       
@@ -34,6 +36,7 @@ export class PermissionGuard implements CanActivate{
         userPermissions.push(permission.name);
       }
     });
+    console.log(userPermissions);
     return userPermissions.some((userPermission) =>
       permissions.includes(userPermission),
     );
