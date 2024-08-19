@@ -1,9 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Tree, TreeChildren, TreeParent } from "typeorm";
 
 @Entity({
     name: 'categories'
 })
-@Tree('closure-table')
 export class CategoryEntity {
 
     @PrimaryGeneratedColumn({
@@ -19,11 +18,30 @@ export class CategoryEntity {
     })
     name: string;
 
-    @TreeParent()
+    @Column({
+        name: 'icon',
+        type: 'varchar',
+        nullable: false
+    })
+    icon: string
+
+    @Column({
+        name: 'parent_id',
+        type: 'integer',
+        nullable: true
+    })
+    parentId: number;
+    
+    @ManyToOne(()=>CategoryEntity,(category)=>category.id)
+    @JoinColumn({
+        name: 'parent_id',
+        referencedColumnName: 'id'
+    })
     parent: CategoryEntity;
 
-    @TreeChildren()
-    children: CategoryEntity[];
+    @OneToMany(()=>CategoryEntity,(category)=>category.parent)
+    children: CategoryEntity[]
+
 
     constructor(category?:Partial<CategoryEntity>){
         Object.assign(this,category)

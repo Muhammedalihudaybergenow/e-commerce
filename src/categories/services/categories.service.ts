@@ -4,6 +4,7 @@ import { UpdateCategoryDto } from '../dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from '../entities/category.entity';
 import { Repository, TreeRepository } from 'typeorm';
+import { TreeBuilder } from 'src/common/utils/tree-builder';
 
 @Injectable()
 export class CategoriesService {
@@ -12,6 +13,7 @@ export class CategoriesService {
   create(createCategoryDto: CreateCategoryDto) {
     const entity = new CategoryEntity();
     entity.name = createCategoryDto.name;
+    entity.icon = createCategoryDto.icon;
     if(createCategoryDto.parentId){
       const parent = new CategoryEntity()
       parent.id = createCategoryDto.parentId;
@@ -20,8 +22,32 @@ export class CategoriesService {
     return this.categoryRepository.save(entity);
   }
 
-  findAll() {
-    return this.categoryRepository.findTrees()
+  async findAll() {
+    const result =await this.categoryRepository.query(
+  `
+  WITH RECURSIVE category_trees AS (
+    SELECT 
+        id,
+        name,
+        icon,
+        parent_id,
+        1 AS level
+    FROM categories pc
+    WHERE pc.parent_id IS NULL
+    
+    UNION ALL
+    
+    SELECT 
+        c.id,
+        c.name,
+        c.icon,
+        c.parent_id,
+        ct.level + 1 AS level
+    FROM categories c
+    INNER JOIN category_trees ct ON c.parent_id = ct.id
+)
+    SELECT * FROM category_trees`)
+      return TreeBuilder.buildTree(result,null)
   }
 
   findOne(id: number) {

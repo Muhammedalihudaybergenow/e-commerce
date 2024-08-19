@@ -20,4 +20,13 @@ export class CreateCategoryDto {
     @IsOptional()
     @IsNumber()
     parentId: number;
+
+    @ApiProperty({
+        type: String,
+        required: true,
+        nullable: false
+    })
+    @IsOptional()
+    @IsString()
+    icon: string;
 }

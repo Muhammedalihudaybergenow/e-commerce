@@ -10,13 +10,13 @@ export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
   @Post()
-  @Permissions('asfagksbdk')
+  // @Permissions('asfagksbdk')
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoriesService.create(createCategoryDto);
   }
 
   @Get()
-  @Permissions('categories.read')
+  // @Permissions('categories.read')
   findAll() {
     return this.categoriesService.findAll();
   }

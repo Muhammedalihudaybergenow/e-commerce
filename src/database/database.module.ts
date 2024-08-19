@@ -12,8 +12,8 @@ import { UserEntity } from 'src/users/entities/user.entity';
     TypeOrmModule.forRoot({
         type: 'postgres',
         host: 'localhost',
-        port: 5432,
-        username: 'postgres',
+        port: 5435,
+        username: 'admin',
         password: 'zaqwsx',
         database:'e-commerce',
         entities: [UserEntity,BrandEntity,CategoryEntity,ProductEntity,RoleEntity,PermissionEntity],

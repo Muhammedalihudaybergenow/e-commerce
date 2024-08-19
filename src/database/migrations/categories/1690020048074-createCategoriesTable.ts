@@ -21,14 +21,19 @@ export class CreateCategoriesTable1690020048074 implements MigrationInterface {
                     isNullable: false
                 },
                 {
-                    name: 'parentId',
+                    name: 'parent_id',
                     type: 'integer',
                     isNullable: true
+                },
+                {
+                    name: 'icon',
+                    type: 'varchar',
+                    isNullable: false
                 }
             ],
             foreignKeys:[
             {
-                columnNames: ['parentId'],
+                columnNames: ['parent_id'],
                 referencedColumnNames: ['id'],
                 referencedTableName: tableName
             }
