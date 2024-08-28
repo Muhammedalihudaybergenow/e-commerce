@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BrandEntity } from 'src/brands/entities/brand.entity';
 import { CategoryEntity } from 'src/categories/entities/category.entity';
@@ -9,20 +10,20 @@ import { UserEntity } from 'src/users/entities/user.entity';
 
 @Module({   
     imports:[
-    TypeOrmModule.forRoot({
-        type: 'postgres',
-        host: 'localhost',
-        port: 5435,
-        username: 'admin',
-        password: 'zaqwsx',
-        database:'e-commerce',
-        entities: [UserEntity,BrandEntity,CategoryEntity,ProductEntity,RoleEntity,PermissionEntity],
-        synchronize:false,
-        // cache: {
-        //     type: 'redis',
-        //     duration: 10000,
-        //     alwaysEnabled: true,
-        // }
+    TypeOrmModule.forRootAsync({
+        imports:[ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService)=>{
+            return {
+                type: 'postgres',
+                database: configService.get<string>('TYPEORM_DATABASE_NAME'),
+                host: configService.get<string>('TYPEORM_DATABASE_HOST'),
+                port: parseInt(configService.get<string>('TYPEORM_DATABASE_PORT')),
+                entities: [UserEntity,ProductEntity,RoleEntity,BrandEntity,CategoryEntity,PermissionEntity],
+                username: configService.get<string>('TYPEORM_DATABASE_USERNAME'),
+                password: configService.get<string>('TYPEORM_DATABASE_PASSWORD')
+            }
+        }
     })]
 })
 export class DatabaseModule {}

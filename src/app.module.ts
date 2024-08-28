@@ -11,6 +11,7 @@ import { ProductsModule } from './products/products.module';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { OrdersModule } from './orders/orders.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -25,6 +26,10 @@ import { OrdersModule } from './orders/orders.module';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
+  ConfigModule.forRoot({
+    envFilePath: '.env',
+    isGlobal: true
+  }),
   CategoriesModule,
   ProductsModule,
   RolesModule,

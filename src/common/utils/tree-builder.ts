@@ -6,6 +6,5 @@ export class TreeBuilder {
             ...item,
             children: TreeBuilder.buildTree(datas,item.id)
         }))
-
     }
 }

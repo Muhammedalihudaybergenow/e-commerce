@@ -4,15 +4,16 @@ import { UserSeeder } from "../seeders/users/user.seeder";
 import { RoleSeeder } from "../seeders/roles/role.seeder";
 import { UserRoleSeeder } from "../seeders/users/user-role.seeder";
 import { PermissionSeeder } from "../seeders/permissions/permission.seeder";
-
+import * as dotenv from 'dotenv';
+dotenv.config()
 const dataSourceOptions: DataSourceOptions & SeederOptions = {
 
     type: 'postgres',
-    database: 'e-commerce',
-    host: 'localhost',
-    port:5435,
-    username: 'admin',
-    password: 'zaqwsx',
+    database: process.env.TYPEORM_DATABASE_NAME,
+    host: process.env.TYPEORM_DATABASE_HOST,
+    port:parseInt(process.env.TYPEORM_DATABASE_PORT),
+    username: process.env.TYPEORM_DATABASE_USERNAME,
+    password: process.env.TYPEORM_DATABASE_PASSWORD,
     synchronize: false,
     entities: ['dist/**/*.entity{.js,.ts}'],
     seeds: [UserSeeder,RoleSeeder,UserRoleSeeder,PermissionSeeder],

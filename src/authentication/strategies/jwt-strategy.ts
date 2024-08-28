@@ -5,14 +5,15 @@ import { JwtPayload } from "../interfaces/jwt-payload.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "src/users/entities/user.entity";
 import { Repository } from "typeorm";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy,'a'){
-    constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>){
+export class JwtStrategy extends PassportStrategy(Strategy,'ALI'){
+    constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>,private configService: ConfigService){
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration:false,
-            secretOrKey: 'jwt-secret'
+            secretOrKey: configService.get<string>('JWT_SECRET')
         });
     }
 
@@ -24,7 +25,6 @@ export class JwtStrategy extends PassportStrategy(Strategy,'a'){
         .leftJoinAndSelect('u.permissions','uP')
         .where('u.id =:id',{id})
         .getOne();
-        console.log(user);
         return user
     }
 }
